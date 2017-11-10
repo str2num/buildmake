@@ -1,0 +1,52 @@
+#edit-mode: -*- python -*-
+#coding: UTF-8
+
+# Work root
+WORKROOT('../../')
+
+# buildmake bin path
+BUILDMAKE_BIN_PATH('~/tools/buildmake/buildmake')
+
+# Using hard link copy.
+COPY_USING_HARD_LINK(True)
+
+# C preprocessor params
+CPPFLAGS('-D_GNU_SOURCE -D__STDC_LIMIT_MACROS -DVERSION=\\\"1.9.8.7\\\"')
+
+# C compile params
+CFLAGS('-g -pipe -W -Wall -fPIC')
+
+# C++ compile params
+CXXFLAGS('-g -pipe -W -Wall -fPIC')
+
+# Include path
+INCPATHS('. ./include ./output ./output/include')
+
+# Using libs
+#LIBS('./libshared-lib-simple.a')
+
+# Default git domain
+#DEFAULT_GIT_DOMAIN('https://github.com/')
+
+# Depend libs in git
+# Using default git domain
+#DEP_CONFIGS('group_name', 'project_name', 'repository')
+# Using local git url
+#DEP_CONFIGS('group_name', 'project_name', 'https://mygit.com/repository')
+
+# Link params
+LDFLAGS('-lpthread -lcrypto -lrt')
+
+# Default include parent dir for headers file
+DEFAULT_LIB_INCLUDE_DIR('math')
+
+user_sources=GLOB('./src/*.cpp')
+user_headers=GLOB('./src/*.h')
+
+# Generate an application 
+#Application('shared-lib-simple', Sources(user_sources))
+# Generate a static library
+#StaticLibrary('shared-lib-simple', Sources(user_sources), HeaderFiles(user_headers))
+# Generate a share library
+SharedLibrary('math', Sources(user_sources), HeaderFiles(user_headers))
+
