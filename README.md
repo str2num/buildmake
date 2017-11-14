@@ -19,7 +19,7 @@ source ~/.bashrc
 # Check buildmake
 buildmake -h
 
-#Output:
+# Output is:
 The buildmake tool can automatically help users build a complete compilation
 environment for C/C++ project, and generate Makefile. It will read the BUILDMAKE file
 in the current directory, then build environment and generate Makefile. Users need to
@@ -36,3 +36,25 @@ options:
     -v --version               current version
 
 ```
+## usage
+```shell
+
+# Step1 Generate a default BUILDMAKE file
+buildmake -G
+
+# Step2 Modify the buildmake as needed
+vim BUILDMAKE
+
+# Step3 Generate Makefile using appropriate options
+buildmake -UB
+
+# Step4 Exec make
+make
+
+```
+
+# More detailed documentation and tutorials
+http://www.str2num.com/opensource/buildmake/
+
+
+
