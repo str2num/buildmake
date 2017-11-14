@@ -1,8 +1,8 @@
-# buildmake
+### buildmake
 A simple and fast tools written in python for generating a c/c++ project's Makefile
 
-# Tutorial
-## Configure
+### Tutorial
+#### Configure
 ```shell
 # Create a dir
 mkdir -p ~/tools
@@ -36,7 +36,7 @@ options:
     -v --version               current version
 
 ```
-## usage
+#### usage
 ```shell
 
 # Step1 Generate a default BUILDMAKE file
@@ -53,7 +53,7 @@ make
 
 ```
 
-# More detailed documentation and tutorials
+### More detailed documentation and tutorials
 http://www.str2num.com/opensource/buildmake/
 
 
