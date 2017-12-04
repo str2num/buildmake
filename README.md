@@ -54,7 +54,7 @@ make
 ```
 
 ### More detailed documentation and tutorials
-http://www.str2num.com/opensource
+http://www.str2num.com/blog/opensource
 
 
 
