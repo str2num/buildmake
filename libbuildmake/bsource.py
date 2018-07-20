@@ -83,6 +83,53 @@ class CSource(Source):
     TYPE = 'c'
     def __init__(self, infile, args, ctx):
         Source.__init__(self, infile, args, ctx)
+    
+    def pre_action(self):
+        Source.pre_action(self)
+
+    def action(self): 
+        Source.action(self)
+        cfile = self._infile
+        objfile = bfunction.replace_file_ext_name(
+            bfunction.add_prefix_to_basename(
+                cfile,
+                self._target.basename() + '_'),
+            '.o')
+        gccflags_s = "%(_incpaths_s)s %(_depends_incpaths_s)s " % (self.__dict__)
+        gccflags_s += "%(_cppflags_s)s %(_cflags_s)s " % (self.__dict__)
+        real_cc = self._ctx.cc()
+        command1 = '%(real_cc)s -MG -MM %(gccflags_s)s %(cfile)s' % (locals())
+        command2 = 'cpp -E %(gccflags_s)s %(cfile)s' % (locals())
+        depfiles = []
+        depfiles.append(cfile)
+        depfiles.extend(self._prefixes)
+        depfiles.extend(get_cpp_depend_files(command1, command2, self._ctx, self._infile))
+        cc = "$(CC)"
+
+        if(not self._incpaths_flag):
+            r_gccflags_s = "$(INCPATH) "
+        else:
+            r_gccflags_s = "%(_incpaths_s)s " % (self.__dict__)
+
+        r_gccflags_s += "$(DEP_INCPATH) "
+
+        if(not self._cppflags_flag):
+            r_gccflags_s += "$(CPPFLAGS) "
+        else:
+            r_gccflags_s += "%(_cppflags_s)s "%(self.__dict__)
+
+        if(not self._cflags_flag):
+            r_gccflags_s += "$(CFLAGS) "
+        else:
+            r_gccflags_s += "%(_cflags_s)s "%(self.__dict__)
+
+        cmd='%(cc)s -c %(r_gccflags_s)s -o %(objfile)s %(cfile)s'%(locals())
+        commands = []
+        commands.append(cmd)
+        r=(objfile, self._line_delim.join(depfiles), commands)
+        self._make_lines.append(r)
+        self._clean_files.append(objfile)
+        self._outfile = objfile 
 
 class CXXSource(Source):
     EXTS = ('.cpp', '.cc', '.cxx')
