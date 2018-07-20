@@ -1,5 +1,13 @@
 ### buildmake
-A simple and fast tools written in python for generating a c/c++ project's Makefile
+采用python编写的一个用于快速构建c/c++项目编译环境的工具。具体功能如下:
++ 支持快速生成一个c/c++项目的Makefile文件
++ 支持快速构建大中型c/c++项目的完整编译环境，包括各种第三方lib库的依赖
++ 能够与github或者其它git管理平台有机结合，灵活的支持大中型项目的编译依赖管理，包括依赖库的下载，自动更新，指定特定的git分支依赖等
++ 支持二进制可执行文件，静态链接库，动态链接库等各种形式的源码发布
+
+### Requirement
++ linux平台下的c/c++项目 
++ 需要安装python 2.x环境
 
 ### Tutorial
 #### Configure
@@ -54,7 +62,7 @@ make
 ```
 
 ### More detailed documentation and tutorials
-http://www.str2num.com/opensource/buildmake/
+https://www.str2num.com/opensource/buildmake/
 
 
 
