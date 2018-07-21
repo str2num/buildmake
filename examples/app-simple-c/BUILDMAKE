@@ -1,0 +1,37 @@
+#edit-mode: -*- python -*-
+#coding: UTF-8
+
+# Work root
+WORKROOT('../../')
+
+# Using hard link copy.
+COPY_USING_HARD_LINK(True)
+
+# C preprocessor params
+CPPFLAGS('-D_GNU_SOURCE -D__STDC_LIMIT_MACROS -DVERSION=\\\"1.9.8.7\\\"')
+
+# C compile params
+CFLAGS('-g -pipe -W -Wall -fPIC')
+
+# C++ compile params
+CXXFLAGS('-g -pipe -W -Wall -fPIC')
+
+# Include path
+INCPATHS('. ./include ./output ./output/include ./src')
+
+# Using libs
+#LIBS('./libapp-simple.a')
+
+# Link params
+LDFLAGS('-lpthread -lcrypto -lrt')
+
+user_sources='./src/main.c ./src/math.c'
+user_headers=''
+
+# Generate an application 
+Application('app-simple-c', Sources(user_sources))
+# Generate a static library
+#StaticLibrary('app-simple-c', Sources(user_sources), HeaderFiles(user_headers))
+# Generate a share library
+#SharedLibrary('app-simple-c', Sources(user_sources), HeaderFiles(user_headers))
+
