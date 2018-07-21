@@ -47,16 +47,19 @@ options:
 #### usage
 ```shell
 
-# Step1 Generate a default BUILDMAKE file
+# 1. 生成一个默认的BUILDMAKE配置文件模板
 buildmake -G
 
-# Step2 Modify the buildmake as needed
+# 2. 根据实际需要修改模板中相应的编译选项
 vim BUILDMAKE
 
-# Step3 Generate Makefile using appropriate options
+# 3. 更新所有的第三方库依赖并编译
 buildmake -UB
 
-# Step4 Exec make
+# 4. 生成Makefile文件
+buildmake
+
+# 5. 编译项目
 make
 
 ```
