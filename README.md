@@ -65,7 +65,6 @@ make
 ```
 
 ### More detailed documentation and tutorials
-https://www.str2num.com/opensource/buildmake/
-
+https://buildmake.mydoc.io
 
 
