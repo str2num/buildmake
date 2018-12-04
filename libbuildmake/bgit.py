@@ -61,7 +61,9 @@ class Git(object):
             command = 'cd %s%s/%s && %s && make' % (workroot, group_name, 
                     project_name, self._ctx.buildmake_bin_path())
             print command
-        os.system(command)
+        if (os.system(command) != 0):
+            print "command exec failed, please check buildmake path, buildmake path can be modified by BUILDAMKE config file."
+            exit(0)
     
     def _depend(self, group_name, project_name):
         workroot = self._ctx.workroot()
