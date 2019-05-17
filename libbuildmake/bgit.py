@@ -48,7 +48,11 @@ class Git(object):
         self._log.log_notice('%s msg=[Update %s/%s from %s]' % (func_name, group_name, project_name, repository))
         # Update from git
         if (not os.path.exists('%s%s/%s' % (workroot, group_name, project_name))):
-            command = 'cd %s%s && git clone %s' % (workroot, group_name, repository)
+            rep = repository.split('#')
+            if (2 == len(rep)):
+                command = 'cd %s%s && git clone %s -b %s' % (workroot, group_name, rep[0], rep[1])
+            else:
+                command = 'cd %s%s && git clone %s' % (workroot, group_name, repository)
         else:
             command = 'cd %s%s/%s && git pull' % (workroot, group_name, project_name)
         os.system(command)
@@ -57,13 +61,20 @@ class Git(object):
         func_name = 'func_name=Git.BUILD'
         self._log.log_notice('%s msg=[Build %s/%s]' % (func_name, group_name, project_name))
         workroot = self._ctx.workroot()
-        if (os.path.exists('%s%s/%s/BUILDMAKE' % (workroot, group_name, project_name))):
-            command = 'cd %s%s/%s && %s && make' % (workroot, group_name, 
-                    project_name, self._ctx.buildmake_bin_path())
+        if (os.path.exists('%s%s/%s/build.sh' % (workroot, group_name, project_name))):
+            command = 'cd %s%s/%s && sh build.sh' % (workroot, group_name, project_name)
             print command
-        if (os.system(command) != 0):
-            print "command exec failed, please check buildmake path, buildmake path can be modified by BUILDAMKE config file."
-            exit(0)
+            if (os.system(command) != 0):
+                print "command exec failed, please check build.sh"
+                exit(0) 
+        elif (os.path.exists('%s%s/%s/BUILDMAKE' % (workroot, group_name, project_name))):
+            command = 'cd %s%s/%s && %s -UB && %s && make' % (workroot, group_name, 
+                    project_name, self._ctx.buildmake_bin_path(),
+                    self._ctx.buildmake_bin_path())
+            print command
+            if (os.system(command) != 0):
+                print "command exec failed, please check buildmake path, buildmake path can be modified by BUILDAMKE config file."
+                exit(0)
     
     def _depend(self, group_name, project_name):
         workroot = self._ctx.workroot()
