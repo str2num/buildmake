@@ -25,6 +25,7 @@ class Source(object):
         self._incpaths = []
         self._cxxflags = []
         self._cppflags = []
+        self._flags_extra = []
         self._cflags = []
         self._prefixes = []
         self._line_delim=' \\\n  '
@@ -33,11 +34,13 @@ class Source(object):
         self._incpaths_flag = False
         self._cxxflags_flag = False
         self._cppflags_flag = False
+        self._flags_extra_flag = False
         self._cflags_flag = False
         
         self._incpaths_s = ''
         self._cxxflags_s = ''
         self._cppflags_s = ''
+        self._flags_extra_s = ''
         self._cflags_s = ''
         self._depends_incpaths = []
         self._depends_incpaths_s = ''
@@ -67,6 +70,8 @@ class Source(object):
             self._cxxflags = self._ctx.cxx_flags().v()
         if (not self._cppflags_flag):
             self._cppflags = self._ctx.cpp_flags().v()
+        if (not self._flags_extra_flag):
+            self._flags_extra = self._ctx.flags_extra().v()
         if (not self._cflags_flag):
             self._cflags = self._ctx.c_flags().v()
         if (not self._depends_incpaths):
@@ -76,8 +81,9 @@ class Source(object):
         self._depends_incpaths_s = self._line_delim.join(map(lambda x:'-I%s' % x, self._depends_incpaths))
         self._cxxflags_s = self._line_delim.join(self._cxxflags)
         self._cppflags_s = self._line_delim.join(self._cppflags)
+        self._flags_extra_s = self._line_delim.join(self._flags_extra)
         self._cflags_s = self._line_delim.join(self._cflags)
-        
+
     def action(self):
         pass
 
@@ -108,7 +114,7 @@ class CSource(Source):
         depfiles.extend(self._prefixes)
         depfiles.extend(get_cpp_depend_files(command1, command2, self._ctx, self._infile))
         cc = "$(CC)"
-
+        
         if(not self._incpaths_flag):
             r_gccflags_s = "$(INCPATH) "
         else:
@@ -125,6 +131,9 @@ class CSource(Source):
             r_gccflags_s += "$(CFLAGS) "
         else:
             r_gccflags_s += "%(_cflags_s)s "%(self.__dict__)
+
+        if cfile in self._ctx.user_sources_extra().v():
+            r_gccflags_s += '$(FLAGSEXTRA)'
 
         cmd='%(cc)s -c %(r_gccflags_s)s -o %(objfile)s %(cfile)s'%(locals())
         commands = []
@@ -147,7 +156,7 @@ class CXXSource(Source):
                 bfunction.add_prefix_to_basename(cxxfile, self._target.basename() + '_'), '.o')
         gccflags_s = '%(_incpaths_s)s %(_depends_incpaths_s)s ' % (self.__dict__)
         gccflags_s += '%(_cppflags_s)s %(_cxxflags_s)s ' % (self.__dict__)
-        
+       
         real_cc = self._ctx.cxx()
         command1 = '%(real_cc)s -MG -MM %(gccflags_s)s %(cxxfile)s' % (locals())
         command2 = 'cpp -E %(gccflags_s)s %(cxxfile)s' % (locals())
@@ -175,6 +184,9 @@ class CXXSource(Source):
         else:
             r_gccflags_s += '%(_cxxflags_s)s ' % (self.__dict__)
         
+        if cxxfile in self._ctx.user_sources_extra().v():
+            r_gccflags_s += '$(FLAGSEXTRA)'
+
         cmd='%(cxx)s -c %(r_gccflags_s)s -o %(objfile)s %(cxxfile)s' % (locals())
         commands = []
         commands.append(cmd)

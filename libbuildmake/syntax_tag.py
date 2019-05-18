@@ -62,6 +62,14 @@ class TagCxxFlags(TagVector):
     def __init__(self):
         TagVector.__init__(self)
 
+class TagFlagsExtra(TagVector):
+    def __init__(self):
+        TagVector.__init__(self)
+
+class TagUserSourcesExtra(TagVector):
+    def __init__(self):
+        TagVector.__init__(self)
+
 class TagIncludePaths(TagVector):
     def __init__(self):
         TagVector.__init__(self)

@@ -33,6 +33,14 @@ def CXXFLAGS(*value):
     ctx = bcontext.get_context()
     ctx.cxx_flags().add_vs(value)
 
+def FLAGS_EXTRA(*value):
+    ctx = bcontext.get_context()
+    ctx.flags_extra().add_vs(value)
+
+def USER_SOURCES_EXTRA(*value):
+    ctx = bcontext.get_context()
+    ctx.user_sources_extra().add_vs(value)
+
 def _include_paths(tag, value):
     for s in value:
         ps = string.split(s)

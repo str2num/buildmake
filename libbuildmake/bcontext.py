@@ -34,6 +34,8 @@ class BContext(object):
         self._cppflags = syntax_tag.TagCppFlags()
         self._cflags = syntax_tag.TagCFlags()
         self._cxxflags = syntax_tag.TagCxxFlags()
+        self._flags_extra = syntax_tag.TagFlagsExtra()
+        self._user_sources_extra = syntax_tag.TagUserSourcesExtra()
         self._incpaths = syntax_tag.TagIncludePaths()
         self._libs = syntax_tag.TagLibraries()
         self._ldflags = syntax_tag.TagLinkFlags()
@@ -63,7 +65,11 @@ class BContext(object):
         cxxflags = self.cxx_flags().v()
         cxxflags_s = self._line_delim.join(cxxflags)
         lines.append('CXXFLAGS=%s' % (cxxflags_s))
-        
+     
+        flags_extra = self.flags_extra().v()
+        flags_extra_s = self._line_delim.join(flags_extra)
+        lines.append('FLAGSEXTRA=%s' % (flags_extra_s))
+   
         incpaths = self.include_paths().v()
         incpaths_s = self._line_delim.join(map(lambda x:'-I%s' % x, incpaths))
         lines.append('INCPATH=%s' % incpaths_s)
@@ -142,6 +148,12 @@ class BContext(object):
     def cxx_flags(self):
         return self._cxxflags
     
+    def flags_extra(self):
+        return self._flags_extra
+    
+    def user_sources_extra(self):
+        return self._user_sources_extra
+
     def include_paths(self):
         return self._incpaths
    

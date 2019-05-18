@@ -73,6 +73,7 @@ buildmake_1.4 2019-05-17
 +  依赖模块可以指定特定的分支版本
 +  fix构建完整编译环境时，依赖模块的依赖无法正常获取
 +  支持第三方依赖模块自定义build.sh编译脚本，buildmake发现模块根目录下存在build.sh会优先执行sh build.sh
++  支持针对特定的源文件添加额外的编译选项
 
 buildmake_1.1 2018-10-24
 +  修复了_depends_incpaths_s为空的bug，这会导致在buildmake过程中，报依赖的第三方库的头文件无法找到的错误。
