@@ -75,7 +75,13 @@ class Git(object):
             if (os.system(command) != 0):
                 print "command exec failed, please check buildmake path, buildmake path can be modified by BUILDAMKE config file."
                 exit(0)
-    
+        elif (os.path.exists('%s%s/%s/Makefile' % (workroot, group_name, project_name))):
+            command = 'cd %s%s/%s && make' % (workroot, group_name, project_name)
+            print command
+            if (os.system(command) != 0):
+                print "command exec failed, Makefile invalid"
+                exit(0)
+
     def _depend(self, group_name, project_name):
         workroot = self._ctx.workroot()
         basepath = os.path.normpath(os.path.join(workroot, group_name, project_name))
