@@ -219,6 +219,7 @@ def get_cpp_depend_files(command1, command2, ctx, infile):
                 filter(lambda x:os.path.abspath(x).startswith(cwd), depfiles))
     for depfile in depfiles:
         if (not os.path.exists(depfile)):
+            log.log_fatal('%s cmd=[%s] err=[%s not found]' % (func_name, command2, os.path.abspath(depfile)))
             (status, _, err) = log.log_notice_with_cc('%s cmd=[%s]' % 
                     (func_name, bfunction.shorten_word(command2)), command2)
             assert(status)
