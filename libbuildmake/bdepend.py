@@ -38,6 +38,7 @@ class Depend(object):
 
         if (not flag):
             incpaths = ['.', './include', './output', './output/include']
+            incpaths.append('./output/include/' + self._project_name[3:])
             incpaths = map(lambda x:os.path.normpath(x), incpaths)
 
         self._incpaths = incpaths

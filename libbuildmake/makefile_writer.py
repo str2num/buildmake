@@ -34,11 +34,12 @@ class MakefileWriter(object):
                 commands.append('rm -rf %s' % (x)) 
             commands.extend(target.make_clean_lines())
 
+        commands.append('rm -rf ./output')
         sources = bfunction.unique(self._ctx.sources(), lambda x:x.out_file())
         for source in sources:
             for x in source.clean_files():
                 commands.append('rm -rf %s' % (x))
-
+        
         r1 = ('clean', '', commands)
         return (r0, r1)
     

@@ -203,10 +203,20 @@ class StaticLibrary(Target):
             commands.append('cp %(cpflags_s)s %(target)s %(output_path)s' % (locals()))
 
         if (header_output_path and self._header_files):
-            commands.append('mkdir -p %(header_output_path)s' % (locals()))
-            commands.append('cp %s %s %s' % (cpflags_s,
-                                            ' '.join(self._header_files),
-                                            header_output_path))
+            output_dir = []
+            for files in self._header_files:
+                dirname = os.path.dirname(files)
+                if True == dirname.startswith("./src/"):
+                    new_dir = header_output_path + dirname[5:]
+                elif True == dirname.startswith("src/"):
+                    new_dir = header_output_path + dirname[3:]
+                else:
+                    new_dir = header_output_path
+                if new_dir not in output_dir:
+                    output_dir.append(new_dir)
+                    commands.append('mkdir -p %s' % new_dir)
+                    all_copy_files = dirname + '/*.h'
+                    commands.append('cp %s %s %s' % (cpflags_s, all_copy_files, new_dir))        
         
         r = (target, self._line_delim.join(self._prefixes + 
                                            self._sources_outfiles +
@@ -216,12 +226,6 @@ class StaticLibrary(Target):
 
         # clean commands
         self._clean_files.append(target)
-        if (output_path):
-            self._clean_files.append(os.path.join(output_path, os.path.basename(target)))
-        if (header_output_path):
-            self._clean_files.extend(map(lambda x:os.path.join(header_output_path,
-                                                              os.path.basename(x)),
-                                        self._header_files))
 
 class SharedLibrary(Target):
     TYPE = 'so'
